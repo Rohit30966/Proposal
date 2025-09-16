@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>A Special Question for You ❤️</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg-from: #ffe4ec; --bg-to: #ffd6e6; }
+  html,body { height:100%; }
+  body {
+    margin:0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg,var(--bg-from),var(--bg-to));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .app {
+    width:100%;
+    max-width:420px;
+    height:100vh;
+    position:relative;
+    box-sizing:border-box;
+    padding:20px;
+  }
+
+  .page {
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    padding:28px;
+    box-sizing:border-box;
+    transition:opacity .35s ease, transform .35s ease;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(6px);
+  }
+  .page.active {
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+  }
+
+  .card-img {
+    width:190px;
+    height:190px;
+    border-radius:999px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:white;
+    overflow:hidden;
+  }
+
+  h1{ font-size:1.5rem; margin:0; color:#e11d70; font-weight:700; text-align:center;}
+  p{ margin:0; color:#444; text-align:center; font-size:1rem; line-height:1.3; }
+
+  .btn {
+    font-weight:700;
+    border-radius:12px;
+    padding:12px 28px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+    cursor: pointer;
+  }
+
+  .btn-yes {
+    background:linear-gradient(180deg,#ff7ab5,#ff4a90);
+    color:white;
+    border:none;
+    transform-origin:center center;
+  }
+  .btn-no {
+    background:#e6e6e6;
+    color:#222;
+    border:none;
+  }
+
+  #button-container {
+    width:100%;
+    max-width:360px;
+    height:160px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  #final-yes {
+    z-index:10;
+    position:relative;
+  }
+  #runaway-no {
+    position:absolute;
+    z-index:20; 
+    touch-action:manipulation;
+    will-change:top,left;
+    transition:top .22s ease,left .22s ease;
+  }
+
+  @keyframes heartbeat { 0% { transform:scale(1); } 10% { transform:scale(.92); } 30% { transform:scale(1.06); } 45% { transform:scale(.95); } 60% { transform:scale(1.02); } 100% { transform:scale(1); } }
+  .heartbeat { animation:heartbeat 1.4s ease-in-out infinite; }
+
+  @keyframes wiggle { 0%{ transform:translateY(0) rotate(0); } 25%{ transform:translateY(-3px) rotate(5deg); } 75%{ transform:translateY(3px) rotate(-5deg); } 100%{ transform:translateY(0) rotate(0); } }
+  .wiggle { animation: wiggle .28s ease; }
+
+  .controls { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .btn { font-size:16px; padding:12px 22px; min-width:110px; }
+
+  @media (max-width:380px){
+    .card-img { width:150px; height:150px; }
+    h1 { font-size:1.25rem; }
+    .btn { padding:12px 18px; min-width:92px; font-size:15px; }
+    #button-container { height:140px; }
+  }
+</style>
+</head>
+<body>
+  <main class="app" role="main" aria-live="polite">
+    <!-- Page 1 -->
+    <section id="page1" class="page active" aria-labelledby="p1h">
+      <div class="card-img" aria-hidden="true">
+        <svg viewBox="0 0 200 200" width="120" height="120" aria-hidden="true"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#ffe6f0"/></linearGradient></defs><rect width="200" height="200" rx="100" fill="url(#g1)"/><g transform="translate(0,12)"><g id="eyes" transform="translate(40,60)"><circle cx="22" cy="20" r="8" fill="#5b5560" opacity="0.98"/><circle cx="110" cy="20" r="8" fill="#5b5560" opacity="0.98"/></g><g id="blush" transform="translate(0,110)"><ellipse cx="55" cy="-20" rx="20" ry="10" fill="#ffd2e0" opacity="0.9"/><ellipse cx="145" cy="-20" rx="20" ry="10" fill="#ffd2e0" opacity="0.9"/></g><g id="mouth" transform="translate(60,88)"><path d="M0 8 Q25 28 50 8" stroke="#6a5167" stroke-width="4" fill="none" stroke-linecap="round" /></g></g></svg>
+      </div>
+      <h1 id="p1h">Hey Cutie! Ek sawaal tha... 🫣</h1>
+      <p>Can I ask you something?</p>
+      <div class="controls" role="group" aria-label="answers">
+        <button class="btn btn-yes" onclick="goTo('page2')">Yes</button>
+        <button class="btn btn-no" onclick="goTo('page2')">No</button>
+      </div>
+    </section>
+
+    <!-- Page 2 -->
+    <section id="page2" class="page" aria-labelledby="p2h">
+      <div class="card-img" aria-hidden="true">
+         <svg viewBox="0 0 200 200" width="120" height="120" aria-hidden="true"><rect width="200" height="200" rx="30" fill="#fff" /><g transform="translate(20,12)"><circle cx="40" cy="50" r="20" fill="#fbe0f1"/><circle cx="120" cy="50" r="20" fill="#fbe0f1"/><g transform="translate(0,80)"><path d="M40 10 Q70 50 100 10" stroke="#ff7ab5" stroke-width="6" fill="none" stroke-linecap="round" /></g></g></svg>
+      </div>
+      <h1 id="p2h">Hum saath mein bohot acche lagenge... 🙈</h1>
+      <p>Kya tum mere saath ek date par chalogi? ☕️</p>
+      <div class="controls" role="group" aria-label="answers page 2">
+        <button class="btn btn-yes" onclick="goTo('success')">Yes</button>
+        <button class="btn btn-no" onclick="goTo('page3')">No</button>
+      </div>
+    </section>
+
+    <!-- Page 3 - The Runaway Button Page -->
+    <section id="page3" class="page" aria-labelledby="p3h">
+      <div class="card-img" aria-hidden="true">
+        <svg viewBox="0 0 200 200" width="120" height="120" aria-hidden="true"><rect width="200" height="200" rx="30" fill="#fff" /><g transform="translate(0,8)"><circle cx="60" cy="60" r="10" fill="#4b3b45" /><circle cx="140" cy="60" r="10" fill="#4b3b45" /><ellipse cx="60" cy="120" rx="22" ry="14" fill="#ffdbe9" opacity="0.9" /><ellipse cx="140" cy="120" rx="22" ry="14" fill="#ffdbe9" opacity="0.9" /><path d="M60 100 Q100 140 140 100" stroke="#6a5167" stroke-width="4" fill="none" stroke-linecap="round" /></g></svg>
+      </div>
+      <h1 id="p3h">Aakhri baar pooch raha hoon... Maan jao na? 🥺</h1>
+      <p id="p3p">Please... Will you be my girlfriend? ❤️</p>
+      <div id="button-container" aria-hidden="false" class="mt-2" role="group" aria-label="final answers">
+        <button id="final-yes" class="btn btn-yes" onclick="goTo('success')">Yes</button>
+        <button id="runaway-no" class="btn btn-no" style="top:12px; left:68%;">No</button>
+      </div>
+    </section>
+
+    <!-- Success Page -->
+    <section id="success" class="page" aria-labelledby="p4h">
+      <div class="card-img heartbeat" aria-hidden="true">
+        <svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true"><g transform="translate(10,10)"><path d="M50 10 C35 -5 0 12 25 45 C35 60 50 75 50 75 C50 75 65 60 75 45 C100 12 65 -5 50 10Z" fill="#ff4a90"/></g></svg>
+      </div>
+      <h1 id="p4h">YAYYYY! I KNEW IT! 🎉</h1>
+      <p>Tum sirf aur sirf meri ho! I love you! 😘❤️</p>
+      <p id="final-message" style="font-size: 0.8rem; color: #e11d70; margin-top: 10px; opacity: 0; transition: opacity 1s ease 1s;"></p>
+    </section>
+  </main>
+
+<script>
+  let soundsReady = false;
+  // Initialize sounds once user interacts
+  document.body.addEventListener('click', () => {
+    if (!soundsReady) {
+      Tone.start();
+      soundsReady = true;
+    }
+  }, { once: true });
+
+  const clickSound = new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0, release: 0.1 } }).toDestination();
+  const swooshSound = new Tone.NoiseSynth({ noise: { type: 'white' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0, release: 0.1 } }).toDestination();
+  const successSound = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.005, decay: 0.2, sustain: 0.1, release: 0.2 } }).toDestination();
+
+  function playClick() { if (soundsReady) clickSound.triggerAttackRelease('C5', '8n'); }
+  function playSwoosh() { if (soundsReady) swooshSound.triggerAttackRelease('8n'); }
+  function playSuccess() {
+    if (!soundsReady) return;
+    const now = Tone.now();
+    successSound.triggerAttackRelease('C5', '8n', now);
+    successSound.triggerAttackRelease('E5', '8n', now + 0.2);
+    successSound.triggerAttackRelease('G5', '8n', now + 0.4);
+  }
+
+  function goTo(id) {
+    playClick();
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+
+    if (id === 'success') {
+      playSuccess();
+      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+      const finalMsg = document.getElementById('final-message');
+      finalMsg.textContent = "Ab screenshot leke mujhe bhejna mat bhoolna! 😉";
+      finalMsg.style.opacity = '1';
+    }
+  }
+
+  (function() {
+    const noBtn = document.getElementById('runaway-no');
+    const yesBtn = document.getElementById('final-yes');
+    const container = document.getElementById('button-container');
+    const p3h = document.getElementById('p3h');
+    const p3p = document.getElementById('p3p');
+
+    const messages = [
+      { h1: "Soch lo fir se... 😥", p: "Are you really, really sure?" },
+      { h1: "Mera dil tod dogi? 💔", p: "You're breaking my heart!" },
+      { h1: "Please naaa... ek chance? 🙏", p: "Just one chance, that's all I ask!" },
+      { h1: "Mai bohot pyaar karunga! 💖", p: "I'll give you all my love!" },
+      { h1: "Itna mat tadpao! 😭", p: "This is torture!" },
+      { h1: "Chocolate dunga pakka! 🍫", p: "Promise! The expensive kind!" },
+      { h1: "Okay, last try! 🥺", p: "I won't ask again... maybe." },
+      { h1: "Is button se jeet paogi? 😉", p: "This button is smarter than you think!" }
+    ];
+    let messageIndex = 0;
+
+    noBtn.addEventListener('click', (e) => { e.preventDefault(); runAway(); });
+    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); runAway(); }, { passive: false });
+
+    function runAway() {
+      if (!document.getElementById('page3').classList.contains('active')) return;
+      
+      playSwoosh();
+      if (window.navigator.vibrate) { window.navigator.vibrate(100); }
+
+      const nextMessage = messages[messageIndex];
+      p3h.textContent = nextMessage.h1;
+      p3p.textContent = nextMessage.p;
+      messageIndex = (messageIndex + 1) % messages.length;
+
+      const cRect = container.getBoundingClientRect();
+      const yRect = yesBtn.getBoundingClientRect();
+      const nRect = noBtn.getBoundingClientRect();
+      const yesRel = { left: yRect.left - cRect.left, top: yRect.top - cRect.top, right: yRect.right - cRect.left, bottom: yRect.bottom - cRect.top };
+
+      let newLeft, newTop, overlaps;
+      for (let i = 0; i < 50; i++) {
+        newLeft = Math.random() * (cRect.width - nRect.width);
+        newTop = Math.random() * (cRect.height - nRect.height);
+        overlaps = !((newLeft + nRect.width) < yesRel.left || newLeft > yesRel.right || (newTop + nRect.height) < yesRel.top || newTop > yesRel.bottom);
+        if (!overlaps) break;
+      }
+
+      noBtn.style.left = `${newLeft}px`;
+      noBtn.style.top = `${newTop}px`;
+      
+      const currentScale = parseFloat(yesBtn.style.transform.replace('scale(', '')) || 1;
+      const newScale = Math.min(currentScale + 0.2, 4);
+      yesBtn.style.transform = `scale(${newScale})`;
+    }
+  })();
+</script>
+</body>
+</html>
